@@ -14,6 +14,10 @@ class TaskViewModel: ViewModel() {
     private val _taskText = MutableLiveData("")
     val taskText: LiveData<String> = _taskText
 
+    fun updateText(text: String) {
+        _taskText.value = text
+    }
+
     fun addTask(title: String) {
         if (title.isNotBlank()) {
             val taskSize = tasks.value?.size ?: 0
@@ -22,15 +26,17 @@ class TaskViewModel: ViewModel() {
                     title = title
                 )
             _tasks.value = (_tasks.value ?: emptyList()) + task
+            _taskText.value = ""
         }
     }
 
     fun completeTask(task: Task) {
-        _tasks.value?.map { item ->
+        val taskList = _tasks.value?.map { item ->
             if (item.id == task.id) {
                 item.copy(completed = !item.completed)
             } else item
-        }
+        } ?: emptyList()
+        _tasks.value = taskList
     }
 
 }

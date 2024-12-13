@@ -22,6 +22,7 @@ fun TaskApp(
 ) {
 
     val tasks by viewModel.tasks.observeAsState()
+    val taskTitle by viewModel.taskText.observeAsState()
 
     var newTaskTitle by remember { mutableStateOf("") }
 
@@ -32,7 +33,7 @@ fun TaskApp(
             onValueChange = { newTaskTitle = it },
             onAddTask = {
                     viewModel.addTask(newTaskTitle)
-                    newTaskTitle = ""
+                    //newTaskTitle = ""
             }
         )
         Log.d("CRISS", "task outside $tasks")

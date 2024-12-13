@@ -1,4 +1,9 @@
 package com.example.taskcomposeexample.presentation.uimodel
 
-class TaskUIState {
-}
+import com.example.taskcomposeexample.data.Task
+
+data class TaskUIState(
+    val listTask: List<Task> = emptyList(),
+    val loading: Boolean = false,
+    val error: String? = ""
+)
