@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -57,4 +58,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.runtime.livedata)
+    // testing
+    testImplementation(libs.mockk)
+    testImplementation(libs.androidx.core.testing)
+
+    // 📦 Dependencia necesaria
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
+    // Testing Navigation
+    androidTestImplementation(libs.androidx.navigation.testing)
+    // serialization
+    implementation(libs.kotlinx.serialization.json)
 }
