@@ -1,49 +1,71 @@
 package com.example.taskcomposeexample.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.taskcomposeexample.data.Task
+import com.example.taskcomposeexample.presentation.uimodel.TaskUIState
 import com.example.taskcomposeexample.presentation.viewmodel.TaskViewModel
 import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
 
 
 @Composable
 fun TaskApp(
-    viewModel: TaskViewModel
+    viewModel: TaskViewModel,
+    onNavigateToDetail: () -> Unit
 ) {
+    val state by viewModel.state.observeAsState()
+    val taskTitle by viewModel.taskText.observeAsState()
 
-    val tasks by viewModel.tasks.observeAsState()
+    //var newTaskTitle by remember { mutableStateOf("") }
 
-    var newTaskTitle by remember { mutableStateOf("") }
+    when(state) {
+        is TaskUIState.Error -> { }
+        TaskUIState.IsLoading -> { CircularProgressIndicator() }
+        is TaskUIState.Success -> {
+            TaskListComposable(
+                taskTitle,
+                viewModel,
+                (state as TaskUIState.Success).listTask,
+                onNavigateToDetail
+                )
+        }
+        null -> {
+        }
+    }
 
+
+}
+
+@Composable
+private fun TaskListComposable(
+    taskTitle: String?,
+    viewModel: TaskViewModel,
+    listTask: List<Task>,
+    onNavigateToDetail: () -> Unit
+) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Input para nueva tarea
         TaskInput(
-            value = newTaskTitle,
-            onValueChange = { newTaskTitle = it },
+            value = taskTitle.toString(),
+            onValueChange = { viewModel.updateText(it) },
             onAddTask = {
-                    viewModel.addTask(newTaskTitle)
-                    newTaskTitle = ""
+                onNavigateToDetail()
+               // viewModel.addTask(taskTitle.toString())
+                //    newTaskTitle = ""
             }
         )
-        Log.d("CRISS", "task outside $tasks")
         // Lista de tareas
-        tasks?.let {
-            Log.d("CRISS", "Task List is not null $it")
-            TaskList(
-                task = it,
-                onTaskClick = { viewModel.completeTask(task = it)}
-            )
-        }
+        TaskList(
+            task = listTask,
+            onTaskClick = { viewModel.completeTask(task = it) }
+        )
 
     }
 }
@@ -52,6 +74,6 @@ fun TaskApp(
 @Composable
 fun TaskAppPreview() {
     TaskComposeExampleTheme {
-       // TaskApp()
+        // TaskApp()
     }
 }
