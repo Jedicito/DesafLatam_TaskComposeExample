@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.serialization)
+    //alias(libs.plugins.serialization)
 }
 
 android {
@@ -69,5 +69,12 @@ dependencies {
     // Testing Navigation
     androidTestImplementation(libs.androidx.navigation.testing)
     // serialization
-    implementation(libs.kotlinx.serialization.json)
+  //  implementation(libs.kotlinx.serialization.json)
+
+    // Test rules and transitive dependencies:
+    //androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+// Needed for createComposeRule(), but not for createAndroidComposeRule<YourActivity>():
+   // debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$rootProject.composeVersion")
 }

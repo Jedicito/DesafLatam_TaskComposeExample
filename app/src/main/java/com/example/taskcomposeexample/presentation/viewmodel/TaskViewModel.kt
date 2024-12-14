@@ -1,48 +1,73 @@
 package com.example.taskcomposeexample.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.ViewModel
-import com.example.taskcomposeexample.data.Task
-import com.example.taskcomposeexample.presentation.uimodel.TaskUIState
+import androidx.lifecycle.viewModelScope
+import com.example.taskcomposeexample.data.model.Task
+import com.example.taskcomposeexample.presentation.uimodel.TaskFilter
+import com.example.taskcomposeexample.presentation.uimodel.TaskUiEvent
+import com.example.taskcomposeexample.presentation.uimodel.TaskUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 
-class TaskViewModel: ViewModel() {
+class TaskViewModel : ViewModel() {
 
-    private val _state = MutableLiveData<TaskUIState>(TaskUIState.Success())
-    val state: LiveData<TaskUIState> = _state
+    private val _uiState = MutableStateFlow(TaskUiState())
+    val uiState: MutableStateFlow<TaskUiState> = _uiState
 
-    private val _taskText = MutableLiveData("")
-    val taskText: LiveData<String> = _taskText
+    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    private val _filter = MutableStateFlow(TaskFilter.All)
 
-    fun updateText(text: String) {
-        _taskText.value = text
-    }
-
-    fun addTask(title: String) {
-        val successState = state.value as TaskUIState.Success
-        if (title.isNotBlank()) {
-            val taskSize = successState.listTask.size
-            val task = Task(
-                    id = taskSize + 1,
-                    title = title
-                )
-            _state.value = successState.copy(
-                listTask = (successState.listTask) + task
+    init {
+        combine(_tasks, _filter) { task, filter ->
+            val filteredTask = when (filter) {
+                TaskFilter.All -> task
+                TaskFilter.COMPLETED -> task.filter { it.isCompleted }
+                TaskFilter.UNCOMPLETED -> task.filter { !it.isCompleted }
+            }
+            _uiState.value.copy(
+                tasks = filteredTask,
+                filter = filter
             )
-            _taskText.value = ""
+        }.launchIn(viewModelScope)
+    }
+
+    fun onEvent(event: TaskUiEvent) {
+        when (event) {
+            is TaskUiEvent.AddTask -> addTask(event.title, event.description)
+            is TaskUiEvent.ToggleTask -> toggleTask(event.taskId)
+            is TaskUiEvent.SetFilter -> setFilter(event.filter)
+            else -> {} // Navigation events handled in UI
         }
     }
 
-    fun completeTask(task: Task) {
-        val successState = state.value as TaskUIState.Success
-        val taskList = successState.listTask.map { item ->
-            if (item.id == task.id) {
-                item.copy(completed = !item.completed)
-            } else item
-        }
-
-        _state.value = successState.copy(
-            listTask = taskList
-        )
+    private fun setFilter(filter: TaskFilter) {
+        _filter.value = filter
     }
+
+    private fun toggleTask(taskId: Int) {
+        _tasks.update { tasks ->
+            tasks.map { task ->
+                if (task.id == taskId) {
+                    task.copy(isCompleted = !task.isCompleted)
+                } else {
+                    task
+                }
+            }
+        }
+    }
+
+    private fun addTask(title: String, description: String) {
+        if (title.isNotBlank()) {
+            val newTask = Task(
+                id = _tasks.value.size + 1,
+                title = title,
+                description = description
+            )
+            _tasks.update { it + newTask }
+        }
+    }
+
 }
