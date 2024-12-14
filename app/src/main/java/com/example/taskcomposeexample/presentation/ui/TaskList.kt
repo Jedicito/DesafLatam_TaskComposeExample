@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.example.taskcomposeexample.data.model.Task
 import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
 
-
 @Composable
 fun TaskList(
     task: List<Task>,
@@ -44,11 +43,12 @@ fun TaskList(
 @Composable
 fun TaskListPreview() {
     val list = listOf(
-        Task(1, "one", "",true),
-        Task(2, "two", "",false)
+        Task(1, "one", "This is a description",true),
+        Task(2, "two", "This is a description",false)
     )
 
     TaskComposeExampleTheme {
+        TaskList(list, {}, {}, paddingValues = PaddingValues())
     }
 
 }
