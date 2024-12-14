@@ -1,7 +1,6 @@
 package com.example.taskcomposeexample.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.runtime.livedata.observeAsState
 import com.example.taskcomposeexample.presentation.uimodel.TaskUIState
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -29,7 +28,7 @@ class TaskViewModelTest {
     @Test
     fun `state is success and task is a empty list when loading the viewmodel`() {
         //when
-        val state = viewModel.state
+        val state = viewModel.uiState
 
         //then
         assertEquals(TaskUIState.Success(listOf()) , state.value)
