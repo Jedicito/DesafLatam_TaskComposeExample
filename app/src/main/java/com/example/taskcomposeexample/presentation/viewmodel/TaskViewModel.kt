@@ -27,10 +27,9 @@ class TaskViewModel : ViewModel() {
                 TaskFilter.COMPLETED -> task.filter { it.isCompleted }
                 TaskFilter.UNCOMPLETED -> task.filter { !it.isCompleted }
             }
-            _uiState.value.copy(
-                tasks = filteredTask,
-                filter = filter
-            )
+            _uiState.update { state ->
+                state.copy(tasks = filteredTask, filter = filter)
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -39,6 +38,7 @@ class TaskViewModel : ViewModel() {
             is TaskUiEvent.AddTask -> addTask(event.title, event.description)
             is TaskUiEvent.ToggleTask -> toggleTask(event.taskId)
             is TaskUiEvent.SetFilter -> setFilter(event.filter)
+            is TaskUiEvent.DeleteTask -> removeTask(event.taskId)
             else -> {} // Navigation events handled in UI
         }
     }
@@ -62,12 +62,15 @@ class TaskViewModel : ViewModel() {
     private fun addTask(title: String, description: String) {
         if (title.isNotBlank()) {
             val newTask = Task(
-                id = _tasks.value.size + 1,
+                id = (_tasks.value.maxOfOrNull { it.id } ?: 0) + 1,
                 title = title,
                 description = description
             )
-            _tasks.update { it + newTask }
+            _tasks.update { tasks -> tasks + newTask }
         }
     }
 
+    private fun removeTask(taskId: Int) {
+        _tasks.update { tasks -> tasks.filter { it.id != taskId } }
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.taskcomposeexample.presentation.ui
+package com.example.taskcomposeexample.presentation.ui.List.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,6 @@ fun TaskItem(
     task: Task,
     onTaskClick: (Int)-> Unit,
     onTaskToggle: (Int)-> Unit,
-    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = Modifier

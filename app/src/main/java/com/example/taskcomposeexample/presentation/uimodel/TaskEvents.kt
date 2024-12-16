@@ -6,4 +6,5 @@ sealed class TaskUiEvent {
     data class SetFilter(val filter: TaskFilter) : TaskUiEvent()
     data object NavigateToAdd : TaskUiEvent()
     data class NavigateToDetail(val taskId: Int) : TaskUiEvent()
+    data class DeleteTask(val taskId: Int): TaskUiEvent()
 }
