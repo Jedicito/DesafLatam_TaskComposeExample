@@ -26,9 +26,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideTaskDao(dataBase: TaskDataBase) : TaskDao {
+    fun provideTaskDao(dataBase: TaskDataBase): TaskDao {
         return dataBase.taskDao()
     }
-
 
 }

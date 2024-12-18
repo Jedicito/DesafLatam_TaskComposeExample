@@ -13,15 +13,15 @@ import javax.inject.Inject
 class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao,
     private val mapper: TaskMapper
-): TaskRepository {
+) : TaskRepository {
 
     override fun getTasks(): Flow<List<Task>> {
-      return taskDao.getAllTask().map { entities ->
-           mapper.toDomainList(entities)
-       }.catch { exception ->
-           Log.e("TaskRepositoryImpl", exception.message.toString())
-           emit(emptyList())
-      }
+        return taskDao.getAllTask().map { entities ->
+            mapper.toDomainList(entities)
+        }.catch { exception ->
+            Log.e("TaskRepositoryImpl", exception.message.toString())
+            emit(emptyList())
+        }
     }
 
     override suspend fun addTask(task: Task) {
@@ -51,6 +51,6 @@ class TaskRepositoryImpl @Inject constructor(
 
 }
 
-sealed class TaskException(message: String, cause: Throwable? = null): Exception(message, cause) {
-    class InsertionError(message: String, cause: Throwable?): TaskException(message, cause)
+sealed class TaskException(message: String, cause: Throwable? = null) : Exception(message, cause) {
+    class InsertionError(message: String, cause: Throwable?) : TaskException(message, cause)
 }

@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.taskcomposeexample.presentation.theme.TaskComposeExampleTheme
 import com.example.taskcomposeexample.presentation.uimodel.TaskFilter
-import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
 
 @Composable
 fun ChipFilter(

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //alias(libs.plugins.serialization)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -77,8 +76,8 @@ dependencies {
     //androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
 // Needed for createComposeRule(), but not for createAndroidComposeRule<YourActivity>():
    // debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$rootProject.composeVersion")
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
 
     //hilt
     implementation(libs.hilt.android)
@@ -88,6 +87,7 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
 }
 

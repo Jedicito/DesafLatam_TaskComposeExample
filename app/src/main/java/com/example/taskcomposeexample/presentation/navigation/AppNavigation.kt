@@ -26,15 +26,17 @@ fun AppNavigation() {
             TaskListScreen(
                 viewModel = viewModel,
                 onNavigate = { event ->
-                    when(event) {
+                    when (event) {
                         is TaskUiEvent.NavigateToAdd -> {
                             navController.navigate(ScreenNavigation.AddTask.route)
                         }
+
                         is TaskUiEvent.NavigateToDetail -> {
                             navController.navigate(ScreenNavigation.Detail.createRoute(event.taskId))
                         }
+
                         else -> {
-                          //  viewModel.onEvent(event)
+                            viewModel.onEvent(event)
                         }
                     }
                 }
@@ -43,13 +45,13 @@ fun AppNavigation() {
 
         composable(
             route = ScreenNavigation.Detail.route,
-            arguments = listOf(navArgument("id") { type = NavType.IntType} )
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
             val viewModel = hiltViewModel<TaskViewModel>()
             val navArgument = backStackEntry.arguments?.getInt("id") ?: 0
             DetailTaskScreen(
                 taskId = navArgument,
-                viewModel =  viewModel,
+                viewModel = viewModel,
                 onBack = { navController.popBackStack() },
                 onToggleCompletion = { taskId ->
                     viewModel.onEvent(TaskUiEvent.ToggleTask(taskId = taskId))
@@ -63,7 +65,7 @@ fun AppNavigation() {
 
         composable(
             route = ScreenNavigation.AddTask.route
-        ) { backStackEntry ->
+        ) {
             val viewModel = hiltViewModel<TaskViewModel>()
             FullScreenDialog(
                 showDialog = true,
