@@ -1,4 +1,4 @@
-package com.example.taskcomposeexample.presentation.ui
+package com.example.taskcomposeexample.presentation.ui.list.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
