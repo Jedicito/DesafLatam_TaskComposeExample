@@ -13,11 +13,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.taskcomposeexample.presentation.theme.TaskComposeExampleTheme
 import com.example.taskcomposeexample.presentation.ui.filter.ChipFilter
 import com.example.taskcomposeexample.presentation.ui.list.composables.TaskList
 import com.example.taskcomposeexample.presentation.uimodel.TaskUiEvent
 import com.example.taskcomposeexample.presentation.viewmodel.TaskViewModel
-import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
 
 @Composable
 fun TaskListScreen(
@@ -43,14 +43,14 @@ fun TaskListScreen(
                 .padding(innerPadding),
         ) {
             ChipFilter(
-                currentFilter = uiState.filter,
+                currentFilter = uiState.currentFilter,
                 onFilterChange = { filter ->
                     viewModel.onEvent(TaskUiEvent.SetFilter(filter))
                 }
             )
 
             TaskList(
-                task = uiState.tasks,
+                task = uiState.filteredTask,
                 onTaskClick = { taskId ->
                     onNavigate(TaskUiEvent.NavigateToDetail(taskId))
                 },

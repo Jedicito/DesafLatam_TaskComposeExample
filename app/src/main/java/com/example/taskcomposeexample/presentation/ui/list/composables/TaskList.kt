@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskcomposeexample.domain.model.Task
-import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
+import com.example.taskcomposeexample.presentation.theme.TaskComposeExampleTheme
+import com.example.taskcomposeexample.presentation.uimodel.TaskUiModel
 
 @Composable
 fun TaskList(
-    task: List<Task>,
+    task: List<TaskUiModel>,
     onTaskClick: (Int) -> Unit,
     onTaskToggle: (Int) -> Unit,
     paddingValues: PaddingValues
@@ -43,8 +43,8 @@ fun TaskList(
 @Composable
 fun TaskListPreview() {
     val list = listOf(
-        Task(1, "one", "This is a description",true),
-        Task(2, "two", "This is a description",false)
+        TaskUiModel(1, "one", "This is a description",true, ""),
+        TaskUiModel(2, "two", "This is a description",false, "")
     )
 
     TaskComposeExampleTheme {

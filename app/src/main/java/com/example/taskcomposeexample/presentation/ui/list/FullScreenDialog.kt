@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
+import com.example.taskcomposeexample.presentation.theme.TaskComposeExampleTheme
 
 @Composable
 fun FullScreenDialog(
@@ -45,7 +45,7 @@ fun FullScreenDialog(
     if (showDialog) {
         Dialog(
             onDismissRequest = onClose,
-            properties = DialogProperties(usePlatformDefaultWidth = false )
+            properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             Surface(modifier = Modifier.fillMaxSize()) {
                 Column(
@@ -71,7 +71,7 @@ fun FullScreenDialog(
                         label = { Text("Input 1") },
                         modifier = Modifier.fillMaxWidth()
                     )
-                     if (isTitleError) {
+                    if (isTitleError) {
                         Text(
                             text = "Title cannot be empty",
                             color = androidx.compose.ui.graphics.Color.Red,
@@ -114,7 +114,7 @@ private fun FullScreenDialogPreview() {
         FullScreenDialog(
             showDialog = true,
             { },
-            { _,_ -> }
+            { _, _ -> }
         )
     }
 

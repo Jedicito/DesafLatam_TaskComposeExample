@@ -66,12 +66,11 @@ fun DetailTaskScreen(
                 }
             )
         }
-    ) {  paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-               // .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -80,6 +79,8 @@ fun DetailTaskScreen(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
+
+            TaskDateDisplay(task.formattedDate)
 
             Spacer(modifier = Modifier.height(16.dp))
 

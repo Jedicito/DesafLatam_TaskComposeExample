@@ -16,16 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskcomposeexample.domain.model.Task
-import com.example.taskcomposeexample.ui.theme.TaskComposeExampleTheme
+import com.example.taskcomposeexample.presentation.theme.TaskComposeExampleTheme
+import com.example.taskcomposeexample.presentation.uimodel.TaskUiModel
 
 
 @Composable
 fun TaskItem(
-    task: Task,
+    task: TaskUiModel,
     onTaskClick: (Int)-> Unit,
     onTaskToggle: (Int)-> Unit,
-    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = Modifier
@@ -67,10 +66,11 @@ fun TaskItem(
 @Composable
 fun TaskItemPreview() {
     TaskComposeExampleTheme {
-        val task = Task(1,
+        val task = TaskUiModel(1,
             "This is a task",
                 "Description",
-                false
+                false,
+                "12-20-2024"
             )
         TaskItem(
             task = task,
